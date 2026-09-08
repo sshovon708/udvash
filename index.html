@@ -1,0 +1,2936 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0033)https://online.udvash-unmesh.com/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta name="description" content="">
+<meta name="keywords" content="Udvash,Unmesh,Online Education,Online Exam,Online Class,Online Admission">
+<meta name="author" content="Udvash-Unmesh Shikkha Poribar">
+<meta name="application-name" content="Udvash-Unmesh Online Portal">
+
+        <title>Dashboard - Udvash Unmesh Online</title>
+
+<!-- ----------------------------------------------------------------
+    Fonts load from google
+----------------------------------------------------------------- -->
+
+<link rel="icon" href="https://online.udvash-unmesh.com/Content/UmsTheme/assets/images/favicon.png" sizes="32x32">
+<link rel="icon" href="https://online.udvash-unmesh.com/Content/UmsTheme/assets/images/favicon.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://online.udvash-unmesh.com/Content/UmsTheme/assets/images/favicon.png">
+<meta name="msapplication-TileImage" content="/Content/UmsTheme/assets/images/favicon.png">
+
+<!-- ----------------------------------------------------------------
+    Fonts load from google
+----------------------------------------------------------------- -->
+
+<link href="./assets/css2" rel="stylesheet">
+
+<!-- ----------------------------------------------------------------
+    Page Stylesheets
+----------------------------------------------------------------- -->
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="./assets/bootstrap.min.css">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" type="text/css" href="./assets/all.min.css">
+
+<!-- Skin -->
+<link rel="stylesheet" type="text/css" href="./assets/skin-udvash.css">
+
+<!-- Style -->
+<link rel="stylesheet" type="text/css" href="./assets/style.css">
+
+<!-- Custom -->
+<link rel="stylesheet" type="text/css" href="./assets/custom.css">
+
+
+<!-- jQuery -->
+<script type="text/javascript" src="./assets/jquery.min.js.download"></script>
+<!-- Main -->
+<script type="text/javascript" src="./assets/main.js.download"></script>
+
+<script type="text/javascript">
+    $(document).ajaxComplete(function (xhr, status) {
+        if (status.getResponseHeader("X-Responded-JSON") != null) {
+            var obj = jQuery.parseJSON(status.getResponseHeader("X-Responded-JSON"));
+            if (obj.status == 401) {
+                //window.location.assign(obj.headers['location']);
+                window.location.assign(obj.headers['location'].substr(0, obj.headers['location'].indexOf('?')));
+            }
+        }
+    });
+
+    function mobileCheck(mobileNumber) {
+        mobileNumber = mobileNumber.replace(/\W+/g, "");
+        var chkVal = mobileNumber.match(/^(?:\+?88)?0?1[13-9]\d{8}$/);
+        if (chkVal != null) {
+            if (mobileNumber.length == 11) {
+                chkVal = '88' + chkVal;
+            }
+            else if (mobileNumber.length == 10) {
+                chkVal = '880' + chkVal;
+            }
+            var chkVal = mobileNumber.match(/^(?:\+?88)?01[13-9]\d{8}$/);
+            if (chkVal != null) {
+                if (mobileNumber.length == 11) {
+                    chkVal = '88' + chkVal;
+                }
+                else if (mobileNumber.length == 10) {
+                    chkVal = '880' + chkVal;
+                }
+            }
+            //alert(chkVal);
+        }
+        return chkVal;
+    }
+
+    function nickNameCheck(nickName) {
+        var chkVal = nickName.match(/^[a-zA-Z .-`]$/);
+        return chkVal;
+    }
+
+    //This function is used for remove other char without numeric for text field
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    if (!String.prototype.trim) {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, '');
+        };
+    }
+
+    function showErrorMessageBelowCtrl(ctrlId, message, show) {
+
+        var divHtml = '<div style="color:red;" id="' + ctrlId + '_err_div" >' + message + '</div>';
+
+        if (show == true) {
+            $('#' + ctrlId).addClass("highlight");
+            $('#' + ctrlId).after(divHtml);
+        } else {
+            $('#' + ctrlId).removeClass("highlight");
+            $('#' + ctrlId + '_err_div').remove();
+        }
+    }
+
+    function validateTextField(controlId, errorMessage) {
+
+        $(document).on("input propertychange", "#" + controlId, function (event) {
+
+            var value = $("#" + controlId).val().trim();
+
+            if (value.length == 0) {
+                showErrorMessageBelowCtrl(controlId, "", false);
+                showErrorMessageBelowCtrl(controlId, errorMessage, true);
+                return false;
+            } else {
+                showErrorMessageBelowCtrl(controlId, "", false);
+            }
+        });
+    }
+
+    function validateDropDownField(controlId, targetId, errorMessage) {
+
+        $(document).on("change", "#" + controlId, function (event) {
+
+            var val = $("#" + targetId).val();
+            if (val.length == 0) {
+                //showErrorMessageBelowCtrl(controlId, "", false);
+                showErrorMessageBelowCtrl(controlId, errorMessage, true);
+            } else {
+                showErrorMessageBelowCtrl(controlId, "", false);
+            }
+        });
+    }
+
+    function validateDropDownField(controlId, errorMessage) {
+
+        $(document).on("change", "#" + controlId, function (event) {
+
+            var val = $("#" + controlId).val();
+            if (val.length == 0) {
+                showErrorMessageBelowCtrl(controlId, "", false);
+                showErrorMessageBelowCtrl(controlId, errorMessage, true);
+            } else {
+                showErrorMessageBelowCtrl(controlId, "", false);
+            }
+        });
+    }
+
+    function validateListField(controlId, errorMessage) {
+
+        $(document).on("change", "#" + controlId, function (event) {
+            var val = $("#" + controlId).val();
+            if (val == null || val.length == 0) {
+                showErrorMessageBelowCtrl(controlId, "", false);
+                showErrorMessageBelowCtrl(controlId, errorMessage, true);
+            } else {
+                showErrorMessageBelowCtrl(controlId, "", false);
+            }
+        });
+    }
+
+    function scrollToElement(selector) {
+        var s = $(selector);
+        if (s != undefined)
+            $(document.body).scrollTop($(selector).offset().top - 120);
+    }
+
+    $(document).ready(function () {
+
+        $("select").change(function () {
+            if ($(this).val() != "") {
+                $(this).parent().find(".field-validation-error-count").remove();
+                $(this).next('span').empty();
+            }
+
+            else {
+                //$(this).parent().find(".field-validation-error-count").remove();
+                $(this).parent().remove("span");
+                $(this).parent().append("<span class='text-danger field-validation-error' style='color:red'></span>");
+            }
+        });
+
+        $(document).on("input propertychange", ".numbersOnly", function (event) {
+            var valStr = $(this).val();
+            var id = $(this).attr("id");
+            var val = parseInt(valStr);
+            showErrorMessageBelowCtrl(id, "", false);
+            if (isNaN(val)) {
+                $(this).val("");
+            }
+            else if (val < 0) {
+                $(this).val("");
+                showErrorMessageBelowCtrl(id, "Please enter valid amount", true);
+            } else {
+                $(this).val(val);
+            }
+        });
+    });
+</script>
+<script>
+    const userAgentGlobal = navigator.userAgent || navigator.vendor || window.opera;
+    const isiOS = /iPhone|iPad|iPod/i.test(userAgentGlobal) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(userAgentGlobal);
+    const isMacOS = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.platform) && !isiOS;
+    const isLinux = /Linux/.test(navigator.platform) && !isiOS && !isAndroid && !isMacOS;
+    const isDesktop = !isiOS && !isAndroid && !isMacOS && !isLinux;
+    var appApiKeyGlobal = getCookie("appApiKey");
+    var studentNameGlobal = getCookie("studentName");
+    var userTypeGlobal = 'student';
+    var appVersionGlobal = "";
+    var returnUrlGlobal = getCookie("AppExamReturnUrl");
+
+    function extractVersion(str) {
+        const match = str.match(/\d+(\.\d+)+/);
+        return match ? match[0] : null;
+    }
+
+    function compareVersions(v1, v2) {
+        const parts1 = extractVersion(v1).split('.').map(Number);
+        const parts2 = extractVersion(v2).split('.').map(Number);
+
+        for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+            const num1 = parts1[i] || 0;
+            const num2 = parts2[i] || 0;
+            if (num1 < num2) return -1;
+            if (num1 > num2) return 1;
+        }
+        return 0;
+    }
+
+    function isVersionGreater(v1, v2) {
+        return compareVersions(v1, v2) === 1;
+    }
+
+    function isVersionLower(v1, v2) {
+        return compareVersions(v1, v2) === -1;
+    }
+
+    function isVersionEqual(v1, v2) {
+        return compareVersions(v1, v2) === 0;
+    }
+
+    function getUserData() {
+        return new Promise((resolve, reject) => {
+            if (isAndroid) {
+                try {
+                    const userDataJson = Android.GetUserData();
+                    const userData = JSON.parse(userDataJson);
+                    resolve(userData);
+                } catch (error) {
+                    reject("Android GetUserData failed: " + error);
+                }
+            } else if (isiOS) {
+                try {
+                    window.receiveGetUserData = function (escapedJsonString) {
+                        try {
+                            const userData = JSON.parse(escapedJsonString);
+                            resolve(userData);
+                        } catch (err) {
+                            reject("JSON parse error: " + err);
+                        }
+                    };
+                    window.webkit.messageHandlers.GetUserData.postMessage(null);
+                } catch (error) {
+                    reject("iOS GetUserData call failed: " + error);
+                }
+            } else {
+                reject("Unsupported platform");
+            }
+        });
+    }
+
+    function setUserData(apiKey, regNo, studentName, userType) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (isAndroid) {
+                    if ((dataSiteName == 'udvash-unmesh' && isVersionLower(appVersionGlobal, "1.0.8")) || (dataSiteName == 'uttoron' && isVersionLower(appVersionGlobal, "1.0.3"))) {
+                        Android.SetUserData(apiKey, regNo, studentName);
+                    } else {
+                        Android.SetUserData(apiKey, regNo, studentName, userType);
+                    }
+                    resolve();
+                } else if (isiOS) {
+                    window.webkit.messageHandlers.SetUserData.postMessage({
+                        apiKey: apiKey,
+                        regNo: regNo,
+                        studentName: studentName,
+                        userType: userType
+                    });
+                    resolve();
+                } else {
+                    reject("Unsupported platform");
+                }
+            } catch (error) {
+                reject("SetUserData failed: " + error);
+            }
+        });
+    }
+
+    function runOmrFlow() {
+        getUserData()
+            .then(userData => {
+                if (!userData.apiKey || userData.apiKey.trim() === "" || appApiKeyGlobal !== userData.apiKey) {
+                    return setUserData(appApiKeyGlobal, appRegistrationNoGlobal, studentNameGlobal, userTypeGlobal);
+                }
+            })
+            .then(() => {
+                if (isAndroid) {
+                    Android.OmrScan();
+                } else if (isiOS) {
+                    window.webkit.messageHandlers.OmrScan.postMessage(null);
+                }
+            })
+            .catch(error => {
+                console.error("OMR flow failed:", error);
+            });
+    }
+
+    function runOmrFlowForOnlineOmr() {
+        getUserData()
+            .then(userData => {
+                if (!userData.apiKey || userData.apiKey.trim() === "" || appApiKeyGlobal !== userData.apiKey) {
+                    return setUserData(appApiKeyGlobal, appRegistrationNoGlobal, studentNameGlobal, userTypeGlobal);
+                }
+            })
+            .then(() => {
+                if (isAndroid) {
+                    Android.OmrScanOnline(returnUrlGlobal);
+                } else if (isiOS) {
+                    window.webkit.messageHandlers.OmrScanOnline.postMessage({
+                        returnUrl: returnUrlGlobal
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("OMR flow failed:", error);
+            });
+    }
+
+
+    $(document).ready(function () {
+        $('.uuu-left-sidebar ul li').each(function () {
+            if (($('#topHeader').attr('data-app-id') == '' && $(this).find('a').attr('href') == '#app') || (isDesktop && $(this).find('a').attr('href') == '#app') || (isMacOS && $(this).find('a').attr('href') == '#app')) {
+                $(this).remove();
+            }
+            else if ($('#topHeader').attr('data-app-id') == '' && $(this).find('a').attr('href') == '#appvideo') {
+                $(this).remove();
+            }
+        });
+
+        if (isMacOS || isLinux) {
+            $(document).on('click', 'a[target="_blank"]', function (e) {
+                e.preventDefault();
+
+                const url = $(this).attr('href');
+
+                if (url && window.external && typeof window.external.sendMessage === 'function') {
+                    window.external.sendMessage(JSON.stringify({
+                        MessageType: "OpenNewWindowWithDownload",
+                        Payload: { url: url }
+                    }));
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '.uuu-left-sidebar a, footer .btn-offline-download, .uuu-dashboard-menu .card-body a', function () {
+        if ($(this).attr('href') == '#app') {
+            if ((dataSiteName == 'udvash-unmesh' && isVersionLower(appVersionGlobal, "1.0.8")) || (dataSiteName == 'uttoron' && isVersionLower(appVersionGlobal, "1.0.3"))) {
+                if (isAndroid) {
+                    Android.OmrScan();
+                } else if (isiOS) {
+                    window.webkit.messageHandlers.OmrScan.postMessage(null);
+                }
+            }
+            else {
+                runOmrFlow();
+            }
+        }
+        else if ($(this).attr('href') == '#appvideo') {
+            if(isAndroid || isiOS){
+                if ((dataSiteName == 'udvash-unmesh' && isVersionLower(appVersionGlobal, "1.0.8")) || (dataSiteName == 'uttoron' && isVersionLower(appVersionGlobal, "1.0.3"))) {
+                    if (isiOS) {
+                        window.webkit.messageHandlers.LaunchOfflineVideo.postMessage(null);
+                    }
+                    else if (isAndroid) {
+                        Android.LaunchOfflineVideo();
+                    }
+                }
+                else {
+                    getUserData()
+                        .then(userData => {
+                            if (!userData.apiKey || userData.apiKey.trim() === "" || appApiKeyGlobal !== userData.apiKey) {
+                                return setUserData(appApiKeyGlobal, appRegistrationNoGlobal, studentNameGlobal, userTypeGlobal);
+                            }
+                        })
+                        .then(() => {
+                            if (isiOS) {
+                                window.webkit.messageHandlers.LaunchOfflineVideo.postMessage(null);
+                            }
+                            else if (isAndroid) {
+                                Android.LaunchOfflineVideo();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("flow failed:", error);
+                        });
+                }
+            }
+            else{
+                if (isDesktop) {
+                    if (window.chrome && window.chrome.webview) {
+                        window.chrome.webview.postMessage(JSON.stringify({
+                            MessageType: "LaunchOfflineVideo",
+                            Payload: "abc"
+                        }));
+                    }
+                }
+                else if (isMacOS || isLinux) {
+                    if (window.external && typeof window.external.sendMessage === 'function') {
+                        window.external.sendMessage(JSON.stringify({
+                            MessageType: "LaunchOfflineVideo",
+                            Payload: "abc"
+                        }));
+                    }
+                }
+            }
+        }
+    });
+</script>
+    <script>
+        //Disable Inspect Element
+        document.onkeydown = function (e) {
+            if (event.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+        }
+
+        $(document).bind("contextmenu", function (e) {
+            e.preventDefault();
+        });
+        $(document).keydown(function (e) {
+            if (e.which === 123) {
+                return false;
+            }
+        });
+    </script>
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+    <link href="./assets/left-sidebar.css" rel="stylesheet">
+<style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style>
+<style>
+    /* Global font family override: whole site -> sans-serif (MathJax & SutonnyMJ excluded) */
+    body,
+    body *:not(mjx-container):not(mjx-container *):not([data-sutonnymj]):not([data-sutonnymj] *) {
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;
+    }
+</style></head>
+<body class="uu-routine-page uu-login-page uu-course-page uu-due-payment-page uu-congratulations-2 uu-profile-page" data-project-root="/">
+
+        <a class="scroll-to-top" href="javascript:void(0)">
+            <i class="fas fa-chevron-circle-up"></i>
+        </a>
+    <style>
+        .uu-has-sub-mobile-menu {
+            visibility: hidden;
+        }
+
+        li.for-mobile-view {
+            display: none !important;
+        }
+
+        .uu-header-wrapper .notification {
+            margin: 0px 5px;
+        }
+
+            .uu-header-wrapper .notification a .badge {
+                min-width: 16px;
+                height: 16px;
+                padding: 0 5px;
+                box-sizing: border-box;
+                border-radius: 26px;
+                background: red;
+                color: #fff;
+                font-size: 10px;
+                right: -8px;
+                top: -3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: 1;
+                white-space: nowrap;
+            }
+
+        @media (max-width:768px) {
+            .for-mobile-menu {
+                display: none !important;
+            }
+
+            li.for-mobile-view {
+                display: block !important;
+            }
+
+            .uu-has-sub-mobile-menu {
+                visibility: visible;
+            }
+
+            ul.uu-main-menu ul.uu-dropdown-menu li a {
+                white-space: pre-wrap;
+            }
+        }
+
+        @media only screen and (max-width: 992px) and (min-width: 768px) {
+            div.uu-header-wrapper {
+                padding-block: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+
+<div class="uu-desible-body "></div>
+
+<header id="topHeader" class="" data-app-id="" data-build-number="" data-site-name="udvash-unmesh">
+    <div class="uu-header-wrapper" data-reg-number="2689286">
+        <div class="container-fluid py-2">
+            <div class="row align-items-center">
+                <div class="col-md-10 col-6 col-lg-10 logo-wrapper">
+                        <div id="wrapper">
+                            <div id="iconId" class="circle icon">
+                                <span class="line top"></span>
+                                <span class="line middle"></span>
+                                <span class="line bottom"></span>
+                            </div>
+                        </div>
+                    <div class="logo d-flex align-items-center">
+                        <a href="./index.html">
+                            <img class="uu-header-logo" src="./assets/UdvashUnmeshOnlineCare.png">
+                        </a>
+                            <div class="circle uuu-desktop-burger ml-4 mt-2">
+                                <span class="line top"></span>
+                                <span class="line middle"></span>
+                                <span class="line bottom"></span>
+                            </div>
+
+                    </div>
+                </div><!-- end col -->
+                <div class="col-md-2 col-6 col-lg-2 px-lg-0 px-1 text-right uu-mobile-right-menu">
+                    <ul class="uu-main-menu">
+<div class="notification" style="position: relative;">
+    <a href="javascript:void(0)" class="position-relative" id="notification_bell_toggle">
+        <span><img src="./assets/Notification.svg" alt="Notification"></span>
+        <span class="badge position-absolute" id="notification_badge">2</span>
+    </a>
+
+    <div class="notification-dropdown d-none" id="notification_dropdown">
+        <div class="notif-arrow"></div>
+        <a href="https://online.udvash-unmesh.com/Notification?type=10" class="notif-menu-item">
+            <span>Q&amp;A</span>
+            <span class="notif-menu-count" id="notif_qna_count">2</span>
+        </a>
+        <a href="https://online.udvash-unmesh.com/Notification?type=20" class="notif-menu-item">
+            <span>Notice</span>
+            <span class="notif-menu-count d-none" id="notif_general_count"></span>
+        </a>
+        <a href="https://online.udvash-unmesh.com/Community/Messages" id="notif_community_link" class="notif-menu-item">
+            <span>Community</span>
+            <span class="notif-menu-count d-none" id="notif_community_count"></span>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Current community user — used to discard community caches left by another user on this browser.
+    window.opCommunityUser = '30_2689286';
+</script>
+
+<style>
+    .notification-dropdown {
+        position: absolute;
+        top: 45px;
+        right: 0;
+        min-width: 180px;
+        background: #FFFFFF;
+        border-radius: 6px;
+        box-shadow: 0 4px 16px rgba(85, 52, 123, 0.2);
+        z-index: 9999;
+        overflow: visible;
+        border: 1px solid #DED4DE;
+        padding: 4px 0;
+    }
+
+    .notif-arrow {
+        position: absolute;
+        top: -8px;
+        right: 18px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #FFFFFF;
+        filter: drop-shadow(0 -1px 0 #DED4DE);
+    }
+
+    .notif-menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+        color: #000;
+        text-decoration: none;
+        font-size: 14px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .notif-menu-item:last-child {
+        border-bottom: none;
+    }
+
+    .notif-menu-item:hover {
+        background: #F8F4FF;
+        color: #55347B;
+        text-decoration: none;
+    }
+
+    .notif-menu-count {
+        background: #FF0000;
+        color: #FFFFFF;
+        font-size: 12px;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+    }
+</style>
+                            <div class="uu-last-element pr-3">
+                                <li class="uu-profile">
+                                    <a href="javascript:void(0)">
+                                        <img class="uu-profile-pic" src="./assets/Profile.svg">
+                                    </a>
+                                    <ul class="uu-dropdown">
+                                        <div class="uu-profile-box">
+                                            <div class="uu-profile-box-header">
+                                                <img src="./assets/profile-pic.png">
+                                            </div>
+                                            <div class="uu-profile-box-body">
+                                                        <h3 class="uu-profile-name">IFTAKHAR AHMMED SHOVON</h3>
+                                                <h4 class="uu-profile-email">Reg: 2689286</h4>
+                                                <h4 class="uu-profile-email">Roll: 10180300518</h4>
+                                                <ul class="uu-profile-action">
+                                                    <li>
+                                                        <a class="uu-profile-edit" href="https://online.udvash-unmesh.com/Profile/ChangePassword" data-title="Change Password">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -1 28 28">
+                                                                <defs>
+                                                                    <style>
+                                                                        .cls-1 {
+                                                                            fill: #8f8f8f;
+                                                                        }
+                                                                    </style>
+                                                                </defs>
+                                                                <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M7.39,18.9,18.72,7.61,15.13,4,3.76,15.35ZM2.62,16.52C1.75,18.59.89,20.64,0,22.74l6.28-2.65Z"></path><path class="cls-1" d="M22.74,2.87a3.35,3.35,0,0,1-1.21,2c-.48.46-.93.94-1.37,1.37L16.47,2.58l.83-.82c.38-.38.75-.78,1.16-1.12A2.58,2.58,0,0,1,22.7,2.13c0,.06,0,.11,0,.17Z"></path><path class="cls-1" d="M7.39,18.9,3.76,15.35,15.13,4l3.59,3.58Z"></path><path class="cls-1" d="M2.62,16.52l3.66,3.57L0,22.74C.89,20.64,1.75,18.59,2.62,16.52Z"></path></g></g>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="uu-profile-view" href="https://online.udvash-unmesh.com/Profile" data-title="View Profile">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.52 19">
+                                                                <defs>
+                                                                    <style>
+                                                                        .cls-1 {
+                                                                            fill: #8f8f8f;
+                                                                        }
+                                                                    </style>
+                                                                </defs>
+                                                                <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M24.26,7.21a13.59,13.59,0,0,0-24,0L0,7.69l.26.49a13.63,13.63,0,0,0,4.9,5.21,13.55,13.55,0,0,0,7.1,2,13.52,13.52,0,0,0,7.09-2,13.65,13.65,0,0,0,4.91-5.21l.26-.49Zm-12,7a6.52,6.52,0,1,1,6.51-6.52A6.51,6.51,0,0,1,12.26,14.21Z"></path><path class="cls-1" d="M16.44,7.69a4.18,4.18,0,1,1-4.18-4.18A4.19,4.19,0,0,1,16.44,7.69Z"></path></g></g>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="uu-logout" href="https://online.udvash-unmesh.com/Account/LogOut" data-title="Log Out">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.98 24.5">
+                                                                <defs>
+                                                                    <style>
+                                                                        .cls-1 {
+                                                                            fill: #8f8f8f;
+                                                                        }
+                                                                    </style>
+                                                                </defs>
+                                                                <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M9.49,20.86a9.5,9.5,0,0,1-5-17.57L5.82,5.41a7,7,0,1,0,7.34,0l1.32-2.12a9.5,9.5,0,0,1-5,17.57Z"></path><rect class="cls-1" x="8.24" width="2.5" height="11.37"></rect></g></g>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </li>
+                        </div>
+                        </ul>
+                    </div>
+
+                </div><!-- end row -->
+            </div><!-- end container -->
+            </div><!-- End Header Wrapper -->
+        </header>    <div id="preloader" class=""></div>
+
+    <!-- Start Mian Section -->
+    <div class="uu-main p-0 ">
+        <div class="container-fluid px-md-3 p-0">
+            <div class="row">
+                <div class="uuu-left-sidebar uu-mobile-menu">
+
+<ul class="">
+        <li>
+            <a href="./index.html" title="Dashboard"><img src="./assets/Dashboard.svg" alt="img" class=""><span class="menu-text">Dashboard</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Course/Programs" title="Add Course"><img src="./assets/AddCourse.svg" alt="img" class=""><span class="menu-text">Add Course</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Course/MyCourses" title="My Courses"><img src="./assets/MyCourse.svg" alt="img" class=""><span class="menu-text">My Courses</span></a>
+        </li>
+                    <li>
+                        <a href="https://online.udvash-unmesh.com/Content/Index?id=2" title="Organized Content"><img src="./assets/fc59a21c-8a41-4f1c-ad51-f69f4f56c5ff.svg" class="sidebar-icon"><span class="menu-text">Organized Content</span></a>
+                    </li>
+                    <li>
+                        <a href="https://online.udvash-unmesh.com/Content/Index?id=3" title="Foundation Class"><img src="./assets/dcefbdf2-394c-4ff7-a68a-8b164baab9a6.png" class="sidebar-icon"><span class="menu-text">Foundation Class</span></a>
+                    </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Routine/PastClasses" title="Past Classes"><img src="./assets/PastClasses.svg" alt="img" class=""><span class="menu-text">Past Classes</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Routine/PastExams" title="Past Exams"><img src="./assets/PastExams.svg" alt="img" class=""><span class="menu-text">Past Exams</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Routine/PracticeExamCourseSubject" title="Practice Exam"><img src="./assets/PracticeExam.svg" alt="img" class=""><span class="menu-text">Practice Exam</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Routine/QuestionAndSolveSheetCourseSubject" title="Solve Sheet"><img src="./assets/SolveSheet.svg" alt="img" class=""><span class="menu-text">Solve Sheet</span></a>
+        </li>
+        <li>
+            <a href="./performance.html" title="Performance"><img src="./assets/Performance.svg" alt="img" class=""><span class="menu-text">Performance</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/QnA/Course" title="Q&amp;A Service"><img src="./assets/QnAService.svg" alt="img" class=""><span class="menu-text">Q&amp;A Service</span></a>
+        </li>
+        <li>
+            <a href="https://online.udvash-unmesh.com/Enrolment/MyDue" title="Due Payment"><img src="./assets/DuePayment.svg" alt="img" class=""><span class="menu-text">Due Payment</span></a>
+        </li>
+                        
+                        
+        <li>
+            <a href="https://online.udvash-unmesh.com/Community/Messages" title="Community"><img src="./assets/CommunityMenu.svg" alt="img" class=""><span class="menu-text">Community</span></a>
+        </li>       
+</ul>                </div>
+                <div class="uuu-main-body pt-lg-4 pt-5 position-relative">
+<div class="customMessage text-center">
+
+
+
+
+
+
+</div>
+                    <div class="body-content pb-lg-4 pb-5">
+                        
+<link href="./assets/redesign.css" rel="stylesheet">
+
+
+
+
+
+<style>
+    .course-content-card {
+        border: 1px solid #e8e8e8;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .course-content-title {
+        font-family: Inter;
+        font-size: 28px;
+        font-weight: 700;
+        color: #772397;
+        margin-bottom: 20px;
+        padding-bottom: 0;
+        border-bottom: none !important;
+        text-decoration: none !important;
+    }
+
+    .course-content-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .course-content-item {
+        padding: 14px 18px;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        background: #ffffff;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.15s ease;
+    }
+
+    .course-content-item:hover {
+        border-color: #c8c8c8;
+        background: #fafafa;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .course-content-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        background-color: #6c757d;
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        font-style: italic;
+        font-size: 20px;
+        font-weight: 500;
+        flex-shrink: 0;
+        text-transform: lowercase;
+    }
+
+    .course-content-img {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .course-content-name {
+        font-family: Inter;
+        font-size: 28px;
+        font-weight: 700;
+        color: #535353;
+    }
+
+    .course-content-item .arrow-icon i {
+        color: #b0b0b0;
+        font-size: 14px;
+        transition: transform 0.15s ease;
+    }
+
+    .course-content-item:hover .arrow-icon i {
+        color: #6c757d;
+        transform: translateX(2px);
+    }
+
+    @media (max-width: 480px) {
+        .course-content-item {
+            padding: 12px 14px;
+        }
+        .course-content-name {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<section class="uuu-dashboard app-dashboard">
+    <div class="container py-4 bg-shadow">
+
+            <div class="d-between-middle btn-menu btn-app-info position-relative">
+                <div>
+                    <h3 class="action-title text-white">Download App</h3>
+                </div>
+                <div>
+                            
+                            
+                            <a class="btn btn-windows mr-2" href="https://ums-cdn.udvash-unmesh.com/ums-cdn/UdvashUnmeshDesktopApp/Release/win-x64/Udvash-Unmesh-win-Setup.exe">Windows <i class="fab fa-windows text-white"></i></a>
+                            
+                            
+                </div>
+
+
+            </div>
+
+        <!--Custom Service Block Messages-->
+
+        <!--Menu Section Start-->
+            <!-- Live Class - Collapsible Menu Button -->
+            <div class="btn-menu bg-white">
+                <a href="javascript:void(0);" class="d-between-middle btn-menu py-3 px-4 bg-white" data-toggle="collapse" data-target="#liveClassCollapse" aria-expanded="false" aria-controls="liveClassCollapse" style="box-shadow: none !important;">
+                <div class="d-flex align-items-center">
+                    <img src="./assets/PastClasses.svg" alt="img" class="mr-2">
+                    <div>
+                        <h3 class="action-title mb-0">Live Class</h3>
+                            <small class="d-block" style="color: #FC5A5A; font-weight: 500;">1 Live, 6 Upcoming</small>
+                    </div>
+                </div>
+                <span class="arrow-icon d-middle collapse-arrow" data-target-arrow="liveClassCollapse"><i class="fas fa-chevron-down" style="color: #FC5A5A"></i></span>
+            </a>
+                <div id="liveClassCollapse" class="collapse mb-2">
+                <hr class="mx-4 my-0">
+                    <div class="collapse-card py-3 px-0 px-md-4 bg-white" style="border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; box-shadow: none !important;">
+                            <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60206" data-lectureid="65539" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="true">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">Chem</span>
+                                                        <span class="d-middle position-relative"><span class="red-circle mr-2"></span><span>Live Now</span></span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Chemistry-03 (Part-02)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>08 Sep, 2026 07:30 PM to 10:30 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">১ম পত্র : অধ্যায়-০২</p>
+
+<p class="exam-syllabus-clean__description"><strong>গুণগত রসায়ন : </strong>দ্রাব্যতা, দ্রাব্যতার গুণফল,আয়ন শনাক্তকরণ, গুণগত বিশ্লেষণ, ক্রোমাটোগ্রাফি, দ্রাবক নিষ্কাশন</p>
+</div>
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">২য় পত্র : অধ্যায়-৩</p>
+
+<p class="exam-syllabus-clean__description"><strong>পরিমাণগত রসায়ন : </strong>পরিমাণগত রসায়নের ক্রোমাটোগ্রাফি অংশ</p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                            <a class="btn joinInteractiveClass" style="color:#fff;" href="https://online.udvash-unmesh.com/Routine/JoinInteractiveClass?courseId=2994&amp;routineId=60206&amp;studentProgramId=6854339" id="JoinClass_60206" data-routineid="60206" data-courseid="2994" data-studentprogramid="6854339">Join Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60211" data-lectureid="65548" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">HMath</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2994_65548_60211_254593">22h 49m</span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Higher Math-03 (Part-01)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>09 Sep, 2026 07:30 PM to 10:30 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">২য় পত্র : অধ্যায়-০৬</p>
+
+<p class="exam-syllabus-clean__description"><strong>কনিক : </strong>কনিক সনাক্তকরণ, পরাবৃত্ত, উপবৃত্ত</p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                        <button class="btn app-btn app-btn-primary-exam-class joinClass disabled">Join Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60214" data-lectureid="65547" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">HMath</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2994_65547_60214_254593">1 day </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Higher Math-02 (Part-02)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>10 Sep, 2026 07:30 PM to 10:30 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">২য় পত্র : অধ্যায়-০৬</p>
+
+<p class="exam-syllabus-clean__description"><strong>কনিক :</strong>অধিবৃত্ত, অসীমতট, স্পর্শক</p>
+</div>
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">২য় পত্র : অধ্যায়-০১</p>
+
+<p class="exam-syllabus-clean__description"><strong>বাস্তব সংখ্যা ও অসমতা </strong></p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                        <button class="btn app-btn app-btn-primary-exam-class joinClass disabled">Join Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60367" data-lectureid="65556" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">Ban</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2994_65556_60367_254593">2 days </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Bangla-03 (Part-01+02)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>11 Sep, 2026 09:00 AM to 12:00 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">বাংলা ১ম পত্র</p>
+
+<p class="exam-syllabus-clean__description"><strong>গদ্য : </strong>যৌবনের গান ; <strong>কবিতা: </strong>বিদ্রোহী</p>
+
+<p class="exam-syllabus-clean__description"><strong>লিখিত প্রস্তুতি: </strong>পাঠের মূলভাব লিখন, উদ্ধৃত সংলাপ ও উদ্ধৃতি ব্যাখ্যা, লেখক/কবি পরিচিতি</p>
+</div>
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">বাংলা ২য় পত্র</p>
+
+<p class="exam-syllabus-clean__description"><strong>ব্যাকরণ : </strong>উচ্চারণের নিয়ম, বচন, বানান ও বানান শুদ্ধি, ণ-ত্ব ও ষ-ত্ব বিধান। <strong>লিখিত প্রস্তুতি: </strong>ব্যাকরণ সম্পর্কিত বিষয়াবলি (সংজ্ঞার্থ ও দৃষ্টান্ত)</p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                        <button class="btn app-btn app-btn-primary-exam-class joinClass disabled">Join Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60370" data-lectureid="65528" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">Phy</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2994_65528_60370_254593">3 days </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Physics-03 (Part-01)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>12 Sep, 2026 07:30 PM to 10:30 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">১ম পত্র : অধ্যায়-০৫</p>
+
+<p class="exam-syllabus-clean__description"><strong>কাজ, শক্তি ও ক্ষমতা </strong></p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                        <button class="btn app-btn app-btn-primary-exam-class joinClass disabled">Join Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60372" data-lectureid="65529" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">Phy</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2994_65529_60372_254593">4 days </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Physics-03 (Part-02)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>13 Sep, 2026 07:30 PM to 10:30 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">১ম পত্র : অধ্যায়-০৬</p>
+
+<p class="exam-syllabus-clean__description"><strong>মহাকর্ষ ও অভিকর্ষ </strong></p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                        <button class="btn app-btn app-btn-primary-exam-class joinClass disabled">Join Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative classRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="60374" data-lectureid="65516" data-courseid="2994" data-batchid="254593" data-studentprogramid="6854339" data-is-interactive="True" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                    <span class="subject-name">Bio</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2994_65516_60374_254593">5 days </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">Marathon Live Class Biology-03 (Part-01+02)</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="date-time mb-2">
+                                                            <h5>Date &amp; Time</h5>
+                                                            <h6><b>14 Sep, 2026 07:30 PM to 10:30 PM</b></h6>
+                                                </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">১ম পত্র : অধ্যায়-০৯</p>
+
+<p class="exam-syllabus-clean__description"><strong>উদ্ভিদ শারীরতত্ত্ব : </strong>খনিজ লবণ পরিশোষণ, প্রস্বেদন, সালোকসংশ্লেষণ, শ্বসন</p>
+</div>
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter" style="margin-top:8px">১ম পত্র : অধ্যায়-১০</p>
+
+<p class="exam-syllabus-clean__description"><strong>উদ্ভিদ প্রজনন </strong></p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Marathon Class 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0 live-class-btn">
+                                                        <button class="btn app-btn app-btn-primary-exam-class joinClass disabled">Join Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                </div>
+            </div>
+            </div>
+            <!-- Live Exam - Collapsible Menu Button -->
+            <div class="btn-menu bg-white">
+            <a href="javascript:void(0);" class="d-between-middle btn-menu py-3 px-4 bg-white" data-toggle="collapse" data-target="#liveExamCollapse" aria-expanded="false" aria-controls="liveExamCollapse" style="box-shadow: none !important;">
+                <div class="d-flex align-items-center">
+                    <img src="./assets/PastExams.svg" alt="img" class="mr-2">
+                    <div>
+                        <h3 class="action-title mb-0">Live Exam</h3>
+                            <small class="d-block" style="color: #FC5A5A; font-weight: 500;">1 Running, 4 Upcoming</small>
+                    </div>
+                </div>
+                <span class="arrow-icon d-middle collapse-arrow" data-target-arrow="liveExamCollapse"><i class="fas fa-chevron-down" style="color: #23C081"></i></span>
+            </a>
+                <div id="liveExamCollapse" class="collapse mb-2">
+                <hr class="mx-4 my-0">
+                    <div class="collapse-card py-3 px-0 px-md-4 bg-white" style="border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; box-shadow: none !important;">
+                        <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative examRoutineBox" data-server-datetime="2026-09-08 08:31:21" data-start-datetime="2026-09-08 08:00:00" data-routineid="161302" data-examid="128613" data-courseid="2995" data-batchid="254593" data-studentprogramid="6854339" data-is-live="true">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                        <span class="subject-name">Live Exam</span>
+                                                        <span class="d-middle position-relative"><span class="red-circle mr-2"></span><span>Live Now</span></span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">VAP KA Weekly Live Exam W-02</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="date-time mb-2">
+                                                        <h5>Date &amp; Time</h5>
+                                                            <h6><b>08 Sep, 2026 08:00 AM to 09 Sep, 2026 11:00 PM</b></h6>
+                                                    </div>
+                                                <div class="duration mb-2">
+                                                    <h5>Duration</h5>
+                                                    <h6><b>1 h  30 min</b></h6>
+                                                </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Online Exam 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0">
+                                                            <h6 class="not-taken mb-3">You haven't taken the exam yet</h6>
+                                                        <a class="btn app-btn app-btn-primary app-btn-take-exam" href="https://online.udvash-unmesh.com/Exam/TakeExam?courseId=2995&amp;routineId=161302&amp;examId=128613&amp;studentProgramId=6854339&amp;examType=0">Take Exam</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative examRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="161369" data-examid="128732" data-courseid="2995" data-batchid="254593" data-studentprogramid="6854339" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                        <span class="subject-name">Live Exam</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2995_128732_161369_254593">2h 29m</span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">VAP KA Daily Live Exam C-03: Part-02</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="date-time mb-2">
+                                                        <h5>Date &amp; Time</h5>
+                                                            <h6><b>08 Sep, 2026 11:00 PM to 09 Sep, 2026 11:00 PM</b></h6>
+                                                    </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">১ম পত্র:অধ্যায়-০২</p>
+
+<p class="exam-syllabus-clean__description"><b>&nbsp;</b>গুণগত<b> </b>রসায়ন<b>&nbsp;:&nbsp;</b>দ্রাব্যতা, দ্রাব্যতার গুণফল,আয়ন শনাক্তকরণ, গুণগত বিশ্লেষণ, ক্রোমাটোগ্রাফি, দ্রাবক নিষ্কাশন।</p>
+
+<p class="exam-syllabus-clean__description"><strong>২য়&nbsp;পত্র:অধ্যায়-০৩</strong></p>
+
+<p class="exam-syllabus-clean__description">&nbsp;পরিমাণগত রসায়ন : পরিমাণগত রসায়নের ক্রোমাটোগ্রাফি অংশ।</p>
+</div>
+<!-- English Version -->
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">First Paper: Chapter -02</p>
+
+<p class="exam-syllabus-clean__description">&nbsp;Qualitative Chemistry :&nbsp; Solubility, Solubility Product, Ion Identification, Qualitative Analysis, Chromatography, Solvent Extraction</p>
+
+<p class="exam-syllabus-clean__description"><strong>Second Paper: Chapter -03</strong></p>
+
+<p class="exam-syllabus-clean__description">&nbsp;Quantitative Chemistry : Chromatography part of Stoichiometric Chemistry&nbsp;</p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="duration mb-2">
+                                                    <h5>Duration</h5>
+                                                    <h6><b>13 min</b></h6>
+                                                </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Online Exam 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0">
+                                                            <h6 class="not-taken mb-3" id="countDownShowText_128732">Exam not started yet</h6>
+                                                        <a href="javascript:void(0)" class="btn app-btn app-btn-primary-exam-class takeExam disabled">Take Exam</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative examRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="161597" data-examid="128749" data-courseid="2995" data-batchid="254593" data-studentprogramid="6854339" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                        <span class="subject-name">Live Exam</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2995_128749_161597_254593">1 day </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">VAP KA Daily Live Exam HM-03: Part-01</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="date-time mb-2">
+                                                        <h5>Date &amp; Time</h5>
+                                                            <h6><b>09 Sep, 2026 11:00 PM to 10 Sep, 2026 11:00 PM</b></h6>
+                                                    </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">২য়&nbsp;পত্র: অধ্যায়-০৬</p>
+
+<p class="exam-syllabus-clean__description">&nbsp;কনিক&nbsp; : কনিক সনাক্তকরণ, পরাবৃত্ত, উপবৃত্ত</p>
+</div>
+<!-- English Version -->
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">Second Paper:Chapter -06</p>
+
+<p class="exam-syllabus-clean__description">Conics : Conic Identification, Parabola, Ellipse</p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="duration mb-2">
+                                                    <h5>Duration</h5>
+                                                    <h6><b>13 min</b></h6>
+                                                </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Online Exam 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0">
+                                                            <h6 class="not-taken mb-3" id="countDownShowText_128749">Exam not started yet</h6>
+                                                        <a href="javascript:void(0)" class="btn app-btn app-btn-primary-exam-class takeExam disabled">Take Exam</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative examRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="161598" data-examid="128750" data-courseid="2995" data-batchid="254593" data-studentprogramid="6854339" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                        <span class="subject-name">Live Exam</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2995_128750_161598_254593">2 days </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">VAP KA Daily Live Exam HM-03: Part-02</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="date-time mb-2">
+                                                        <h5>Date &amp; Time</h5>
+                                                            <h6><b>10 Sep, 2026 11:00 PM to 11 Sep, 2026 11:00 PM</b></h6>
+                                                    </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">২য়&nbsp;পত্র: অধ্যায়-০৬</p>
+
+<p class="exam-syllabus-clean__description">&nbsp;কনিক <b>:&nbsp;</b>অধিবৃত্ত, অসীমতট, স্পর্শক<br>
+<strong>২য়&nbsp;পত্র: অধ্যায়-০১</strong><br>
+বাস্তব সংখ্যা ও অসমতা&nbsp;</p>
+</div>
+<!-- English Version -->
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">Second Paper: Chapter -06</p>
+
+<p class="exam-syllabus-clean__description">&nbsp;Conics : Hyperbola, Asymptote, Tangent<br>
+<strong>Second Paper: Chapter -01</strong><br>
+&nbsp;Real Number and Inequality&nbsp;</p>
+</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="duration mb-2">
+                                                    <h5>Duration</h5>
+                                                    <h6><b>13 min</b></h6>
+                                                </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Online Exam 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0">
+                                                            <h6 class="not-taken mb-3" id="countDownShowText_128750">Exam not started yet</h6>
+                                                        <a href="javascript:void(0)" class="btn app-btn app-btn-primary-exam-class takeExam disabled">Take Exam</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 d-flex">
+                                        <div class="card dashboard-routine-item position-relative examRoutineBox" data-server-datetime="" data-start-datetime="" data-routineid="161599" data-examid="128774" data-courseid="2995" data-batchid="254593" data-studentprogramid="6854339" data-is-live="false">
+                                            <div class="card-header">
+                                                <h6 class="d-between-middle mb-2">
+                                                        <span class="subject-name">Live Exam</span>
+                                                        <span class="d-middle position-relative" id="countDownShow_2995_128774_161599_254593">3 days </span>
+                                                </h6>
+                                                <h2 class="uuu-wrap-title">VAP KA Daily Live Exam Ban-03</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="date-time mb-2">
+                                                        <h5>Date &amp; Time</h5>
+                                                            <h6><b>11 Sep, 2026 11:00 PM to 12 Sep, 2026 11:00 PM</b></h6>
+                                                    </div>
+                                                    <div class="syllabus mb-2">
+                                                        <h5>Syllabus</h5>
+                                                        <div class="syllabus-content">
+                                                            <style type="text/css">.exam-syllabus-clean {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d3d7df;
+  border-radius: 5px;
+  color: #20242e;
+  font-family: inherit;
+  text-align: left !important;
+}
+
+/* পুরোনো বা global paragraph design বাতিল করবে */
+.exam-syllabus-clean p {
+  margin: 0;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+/* শুধু বাংলা ও ইংরেজি ভার্সনের মাঝখানে দাগ */
+.exam-syllabus-clean__version
++ .exam-syllabus-clean__version {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* অধ্যায়ের নাম */
+.exam-syllabus-clean__chapter {
+  margin-bottom: 5px !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* বিস্তারিত অংশ */
+.exam-syllabus-clean__description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+</style>
+<div class="exam-syllabus-clean"><!-- বাংলা ভার্সন -->
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">বাংলা ১ম পত্র</p>
+
+<p class="exam-syllabus-clean__description">◾&nbsp;গদ্য: যৌবনের গান ।</p>
+
+<div>◾&nbsp;কবিতা: : বিদ্রোহী ।
+<div>◾&nbsp;লিখিত প্রস্তুতি:পাঠের মূলভাব লিখন, উদ্ধৃত সংলাপ ও উদ্ধৃতি ব্যাখ্যা, লেখক/কবি পরিচিতি।</div>
+</div>
+</div>
+<!-- English Version -->
+
+<div class="exam-syllabus-clean__version">
+<p class="exam-syllabus-clean__chapter">বাংলা ২য় পত্র</p>
+
+<p class="exam-syllabus-clean__description">◾&nbsp;উচ্চারণের নিয়ম, বচন, বানান ও বানান শুদ্ধি, ণ-ত্ব ও ষ-ত্ব বিধান।&nbsp;</p>
+
+<div>◾&nbsp;লিখিত প্রস্তুতি: ব্যাকরণ সম্পর্কিত বিষয়াবলি (সংজ্ঞার্থ ও দৃষ্টান্ত)।</div>
+</div>
+</div>
+
+<div id="gtx-trans" style="position: absolute; left: 9px; top: 139.875px;">
+<div class="gtx-trans-icon">&nbsp;</div>
+</div>
+
+                                                        </div>
+                                                    </div>
+                                                <div class="duration mb-2">
+                                                    <h5>Duration</h5>
+                                                    <h6><b>26 min</b></h6>
+                                                </div>
+                                                <div class="courseProgram mb-2">
+                                                    <h5>Course</h5>
+                                                    <b>Varsity 'KA' Online Exam 2026</b><br>
+                                                    <span>Varsity 'KA' Admission Program 2026</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center bg-transparent border-0">
+                                                            <h6 class="not-taken mb-3" id="countDownShowText_128774">Exam not started yet</h6>
+                                                        <a href="javascript:void(0)" class="btn app-btn app-btn-primary-exam-class takeExam disabled">Take Exam</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                </div>
+            </div>
+            </div>
+            <!-- Other static menu links -->
+            <a href="https://online.udvash-unmesh.com/Routine/PracticeExamCourseSubject" class="d-between-middle btn-menu py-3 px-4 bg-white">
+                <div class="d-flex align-items-center">
+                    <img src="./assets/PracticeExam.svg" alt="img" class="mr-2">
+                    <div>
+                        <h3 class="action-title">Practice Exam</h3>
+                    </div>
+                </div>
+                <span class="arrow-icon d-middle"><i class="fas fa-chevron-right" style="color: #00BA00"></i></span>
+            </a>
+            <a href="https://online.udvash-unmesh.com/Routine/QuestionAndSolveSheetCourseSubject" class="d-between-middle btn-menu py-3 px-4 bg-white">
+                <div class="d-flex align-items-center">
+                    <img src="./assets/SolveSheet.svg" alt="img" class="mr-2">
+                    <div>
+                        <h3 class="action-title">Solve Sheet</h3>
+                    </div>
+                </div>
+                <span class="arrow-icon d-middle"><i class="fas fa-chevron-right" style="color: #9F7CE8"></i></span>
+            </a>
+            <a href="https://online.udvash-unmesh.com/QnA/Course" class="d-between-middle btn-menu py-3 px-4 bg-white">
+                <div class="d-flex align-items-center">
+                    <img src="./assets/QnAService.svg" alt="img" class="mr-2">
+                    <div>
+                        <h3 class="action-title">Q&amp;A Service</h3>
+                    </div>
+                </div>
+                <span class="arrow-icon d-middle"><i class="fas fa-chevron-right" style="color: #25B7D3"></i></span>
+            </a>
+            <a href="https://online.udvash-unmesh.com/Community/Messages" class="d-between-middle btn-menu py-3 px-4 bg-white">
+                <div class="d-flex align-items-center">
+                    <img src="./assets/CommunityMenu.svg" alt="img" class="mr-2">
+                    <div>
+                        <h3 class="action-title">Community</h3>
+                    </div>
+                </div>
+                <span class="arrow-icon d-middle"><i class="fas fa-chevron-right" style="color: #772397"></i></span>
+            </a>
+            <!-- Custom Menu Cards (one card per MasterCourseType - e.g. Course & Content, Master Class, Archive, etc.) -->
+        <!--Menu Section End-->
+
+    </div>
+</section>
+
+
+
+
+                    </div>
+
+
+<style>
+    div.uu-footer-top {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
+</style>
+<!-- Start Footer Section -->
+<footer>
+    <div class="container" style="max-width: 1200px !important;">
+        <div class="row uu-footer-top">
+            <div class="col-md-4 col-sm-6">
+                <img class="uu-footer-logo" src="./assets/Udvash-Unmesh-Online-Care-Logo-White.png">
+            </div><!-- end col -->
+
+            <div class="col-md-2 col-sm-6">
+                <h4 class="text-white">Help</h4>
+                <ul class="uu-footer-menu">
+                    <li>
+                        <a href="https://udvash-unmesh.com/AboutUs" target="_blank">About Us</a>
+                    </li>
+                    <li>
+                        <a href="https://udvash-unmesh.com/privacy-policy" target="_blank">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="https://udvash-unmesh.com/terms-conditions" target="_blank">Terms &amp; Conditions</a>
+                    </li>
+                    <li>
+                        <a href="https://udvash-unmesh.com/Faq" target="_blank">FAQs</a>
+                    </li>
+                    <li>
+                        <a href="https://udvash-unmesh.com/ContactUs" target="_blank">Contact Us</a>
+                    </li>
+                </ul>
+
+            </div><!-- end col -->
+
+            <div class="col-md-2 col-sm-6">
+
+                <h4 class="text-white">Explore</h4>
+                <ul class="uu-footer-menu">
+                    <li>
+                        <a href="https://udvash.com/" target="_blank">Udvash</a>
+                    </li>
+                    <li>
+                        <a href="https://unmesh.com/" target="_blank">Unmesh</a>
+                    </li>                    
+                </ul>
+
+            </div><!-- end col -->
+
+            <div class="col-md-4 col-sm-6">
+                <h4 class="text-white">Get in Touch</h4>
+                <ul class="uu-footer-menu">
+                    <li>
+                        <p class="text-white mb-2">Address: Hossain Tower (5th Floor), 75, Green Road, Farmgate; Sher-e-Bangla Nagar PS; Dhaka-1205.</p>
+                    </li>
+                    <li>
+                        <p class="mb-0"><a class="text-white mb-0" href="tel:09666775566">Helpline: 09666775566</a></p>
+                    </li>
+                    <li>
+                        <p class="text-white mb-0">Email: <a class="text-white mb-0" href="mailto:info@udvash-unmesh.com">info@udvash-unmesh.com</a></p>
+                    </li>
+                    <li class="social-icons">
+                        <div class="media form-inline">
+                            <a href="https://www.youtube.com/c/UdvashUnmesh">
+                                <img alt="" src="./assets/youtube.png">
+                            </a>
+                            <a href="https://www.instagram.com/udvash_unmesh/">
+                                <img alt="" src="./assets/instagram.png">
+                            </a>
+                            <a href="https://www.linkedin.com/in/udvashunmesh/">
+                                <img alt="" src="./assets/linkedIn.png">
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+
+            </div><!-- end col -->
+
+        </div><!-- end row -->
+        <!-- end footer top section -->
+
+        <div class="row uu-footer-bottom">
+            <div class="col-12">
+                <p class="text-center">
+                    <span>Copyright © Udvash-Unmesh Online Care. All rights reserved. 2026</span>
+                    | <span>P-1 | V-line-udvash-portal-db5848c49-hn4nh.229.7</span>
+                </p>
+            </div>
+        </div><!-- end row -->
+        <!-- end footer bottom section -->
+
+    </div><!-- end container -->
+</footer><!-- End Footer Section -->
+
+
+
+<!-- ----------------------------------------------------------------
+        Page Scripts
+----------------------------------------------------------------- -->
+<!-- Bootstrap -->
+<script type="text/javascript" src="./assets/bootstrap.bundle.min.js.download"></script>
+<script type="text/javascript" src="./assets/bootstrap-datepicker.js.download"></script>
+
+<!-- Fontawesome -->
+<script src="./assets/bootstrap-datetimepicker.min.js.download"></script>
+<!-- Common -->
+<script type="text/javascript" src="./assets/Common-2.0.js.download"></script>
+
+<script type="text/javascript" src="./assets/footer.js.download"></script>
+        <script src="./assets/notificationCount.js.download"></script>
+
+
+<script>
+    var appRegistrationNoGlobal = $('.uu-header-wrapper').attr('data-reg-number');
+    var dataSiteName = $('#topHeader').attr('data-site-name');
+</script>
+<!--Browser suggested script-->
+<script src="./assets/website-integration.js.download"></script>                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- End Mian Section -->
+    <script>
+        // Global Preloader
+        var preloader = $('#preloader');       
+    </script>
+    
+    <script>
+        var antyForgery = "";
+        function gettoken() {
+            var token = '<input name="__RequestVerificationToken" type="hidden" value="CfDJ8N35IQ6GAvpBvtp9ntZwaHV1ayA-Gk8N_4D2WWJ_rz26dhhrkv4_WzfxXjUpTZf5xwwkjmhuPobot887pY1cCvmSdbDG_9XSLeZczKex7wYnZkIVCxPUghefXx9bdDbskefZI9c1k1vL0PeY-l94cCGFGoCOaEL3yjSJnsSNFpOyd8802jMFIxflTVz6CMP8sg" />';
+            token = $(token).val();
+            return token;
+        }
+    </script>
+    <script type="text/javascript" src="./assets/jquery.blockUI.js.download"></script>
+    <script type="text/javascript" src="./assets/moment.js.download"></script>
+    <script id="MathJax-script" src="./assets/tex-mml-chtml.js.download"></script>
+    <script src="./assets/dashboard.js.download"></script>
+
+        <script>
+            $('#backButtonContainer').remove();
+            $(document).ready(function () {
+                $(document).on('click', '.app-btn-desktop-copy', function () {
+                    let downloadUrl = $(this).data('href');
+                    let $btn = $(this);
+                    let originalText = $btn.text();
+
+                    if (isDesktop && downloadUrl) {
+                        // Copy URL to clipboard
+                        navigator.clipboard.writeText(downloadUrl).then(function() {
+                            // Change button text to "Copied"
+                            $btn.text('Copied');
+
+                            // Revert back to original text after 2 seconds
+                            setTimeout(function() {
+                                $btn.text(originalText);
+                            }, 2000);
+                        }).catch(function(err) {
+                            // Fallback for older browsers
+                            var tempInput = document.createElement('input');
+                            tempInput.value = downloadUrl;
+                            document.body.appendChild(tempInput);
+                            tempInput.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(tempInput);
+
+                            // Change button text to "Copied"
+                            $btn.text('Copied');
+
+                            // Revert back to original text after 2 seconds
+                            setTimeout(function() {
+                                $btn.text(originalText);
+                            }, 2000);
+                        });
+                    }
+                });
+
+                // Close button handler for desktop overlay popups only (Windows, Mac, Linux)
+                $(document).on('click', '.btn-close-overlay', function () {
+                    var $backdrop = $(this).closest('.position-fixed');
+                    var overlayClass = '';
+
+                    if ($backdrop.hasClass('overlay-backdrop-windows')) {
+                        overlayClass = 'windows';
+                    } else if ($backdrop.hasClass('overlay-backdrop-mac')) {
+                        overlayClass = 'mac';
+                    } else if ($backdrop.hasClass('overlay-backdrop-linux')) {
+                        overlayClass = 'linux';
+                    }
+
+                    // Hide the entire backdrop (which contains the overlay)
+                    $backdrop.hide();
+
+                    // Store in sessionStorage (will be cleared when app/browser closes)
+                    if (overlayClass) {
+                        sessionStorage.setItem('updateOverlay_' + overlayClass + '_dismissed', 'true');
+                    }
+                });
+
+                // Check sessionStorage before showing overlays (desktop only)
+                function checkOverlayStatus() {
+                    var platforms = ['windows', 'mac', 'linux'];
+                    platforms.forEach(function(platform) {
+                        var isDismissed = sessionStorage.getItem('updateOverlay_' + platform + '_dismissed');
+                        if (isDismissed === 'true') {
+                            $('.overlay-backdrop-' + platform).hide();
+                        }
+                    });
+                }
+
+                // Check overlay status on page load
+                checkOverlayStatus();
+
+                detectDevice();
+                $(document).on('click', '.btn-app-info .btn-ios', function () {
+                    $('.ios-info-div').toggleClass('d-none');
+                });
+                $(document).on('click', '.btn-app-info .btn-ios-info-close', function () {
+                    $('.ios-info-div').toggleClass('d-none');
+                });
+            })
+            function detectDevice() {
+                // Check if device detection variables are defined
+                var isAndroidDevice = typeof isAndroid !== 'undefined' && isAndroid;
+                var isiOSDevice = typeof isiOS !== 'undefined' && isiOS;
+                var isMacOSDevice = typeof isMacOS !== 'undefined' && isMacOS;
+                var isLinuxDevice = typeof isLinux !== 'undefined' && isLinux;
+                var isDesktopDevice = typeof isDesktop !== 'undefined' && isDesktop;
+
+                // For app environment, check the app-btn href attribute in update overlay divs
+                var androidLink = $('.block-app-overlay .app-btn').attr('href') || $('.btn-android').attr('href');
+                var iosLink = $('.block-app-overlay-ios .app-btn').attr('href') || $('.btn-ios').attr('href');
+                var windowsLink = $('.block-app-overlay-windows .app-btn').attr('data-href') || $('.btn-windows').attr('href');
+                var macLink = $('.block-app-overlay-mac .app-btn').attr('href') || $('.btn-mac').attr('href');
+                var linuxLink = $('.block-app-overlay-linux .app-btn').attr('href') || $('.btn-linux').attr('href');
+                var testFlightLink = $('.ios-info-div .test-flight-link').attr('href');
+                var mainIosLink = $('.ios-info-div .main-link').attr('href');
+
+                if (isiOSDevice && (testFlightLink || mainIosLink || iosLink)) {
+                    $('.btn-app-info').removeClass('d-none');
+                    $('.btn-app-info .btn-ios').removeClass('d-none');
+                    $('.btn-app-info .btn-android').remove();
+                    $('.btn-app-info .btn-windows').remove();
+                    $('.btn-app-info .btn-mac').remove();
+                    $('.btn-app-info .btn-linux').remove();
+                    $('.overlay-backdrop').remove();
+                    $('.overlay-backdrop-windows').remove();
+                    $('.overlay-backdrop-mac').remove();
+                    $('.overlay-backdrop-linux').remove();
+                    // Always show iOS overlay - no session check
+                    $('.overlay-backdrop-ios').css('display', 'flex');
+                } else if (isAndroidDevice && androidLink) {
+                    $('.btn-app-info').removeClass('d-none');
+                    $('.btn-app-info .btn-android').removeClass('d-none');
+                    $('.btn-app-info .btn-ios').remove();
+                    $('.btn-app-info .btn-windows').remove();
+                    $('.btn-app-info .btn-mac').remove();
+                    $('.btn-app-info .btn-linux').remove();
+                    $('.overlay-backdrop-ios').remove();
+                    $('.overlay-backdrop-windows').remove();
+                    $('.overlay-backdrop-mac').remove();
+                    $('.overlay-backdrop-linux').remove();
+                    // Always show Android overlay - no session check
+                    $('.overlay-backdrop').css('display', 'flex');
+                    $('.beta-text').remove();
+                } else if (isMacOSDevice && macLink) {
+                    $('.btn-app-info').removeClass('d-none');
+                    $('.btn-app-info .btn-mac').removeClass('d-none');
+                    $('.btn-app-info .btn-android').remove();
+                    $('.btn-app-info .btn-ios').remove();
+                    $('.btn-app-info .btn-windows').remove();
+                    $('.btn-app-info .btn-linux').remove();
+                    $('.overlay-backdrop').remove();
+                    $('.overlay-backdrop-ios').remove();
+                    $('.overlay-backdrop-windows').remove();
+                    $('.overlay-backdrop-linux').remove();
+                    // Check if overlay was dismissed in this session
+                    var isDismissed = sessionStorage.getItem('updateOverlay_mac_dismissed');
+                    if (isDismissed !== 'true') {
+                        $('.overlay-backdrop-mac').css('display', 'flex');
+                    }
+                } else if (isLinuxDevice && linuxLink) {
+                    $('.btn-app-info').removeClass('d-none');
+                    $('.btn-app-info .btn-linux').removeClass('d-none');
+                    $('.btn-app-info .btn-android').remove();
+                    $('.btn-app-info .btn-ios').remove();
+                    $('.btn-app-info .btn-windows').remove();
+                    $('.btn-app-info .btn-mac').remove();
+                    $('.overlay-backdrop').remove();
+                    $('.overlay-backdrop-ios').remove();
+                    $('.overlay-backdrop-windows').remove();
+                    $('.overlay-backdrop-mac').remove();
+                    // Check if overlay was dismissed in this session
+                    var isDismissed = sessionStorage.getItem('updateOverlay_linux_dismissed');
+                    if (isDismissed !== 'true') {
+                        $('.overlay-backdrop-linux').css('display', 'flex');
+                    }
+                } else if (isDesktopDevice && windowsLink) {
+                    // isDesktop means Windows or other non-Mac/Linux desktop OS
+                    $('.btn-app-info').removeClass('d-none');
+                    $('.btn-app-info .btn-windows').removeClass('d-none');
+                    $('.btn-app-info .btn-android').remove();
+                    $('.btn-app-info .btn-ios').remove();
+                    $('.btn-app-info .btn-mac').remove();
+                    $('.btn-app-info .btn-linux').remove();
+                    $('.overlay-backdrop').remove();
+                    $('.overlay-backdrop-ios').remove();
+                    $('.overlay-backdrop-mac').remove();
+                    $('.overlay-backdrop-linux').remove();
+                    // Check if overlay was dismissed in this session
+                    var isDismissed = sessionStorage.getItem('updateOverlay_windows_dismissed');
+                    if (isDismissed !== 'true') {
+                        $('.overlay-backdrop-windows').css('display', 'flex');
+                    }
+                } else {
+                    // If no app available for the detected platform, hide everything
+                    $('.btn-app-info').addClass('d-none');
+                    $('.overlay-backdrop').hide();
+                    $('.overlay-backdrop-ios').hide();
+                    $('.overlay-backdrop-windows').hide();
+                    $('.overlay-backdrop-mac').hide();
+                    $('.overlay-backdrop-linux').hide();
+                }
+            }
+        </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#liveClassCollapse, #liveExamCollapse').on('show.bs.collapse', function () {
+
+                var current = this;
+
+                // 1. Clicked section icon rotation
+                var $currentArrow = $('[data-target-arrow="' + current.id + '"] i');
+                $currentArrow.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+
+                // 2. Others section collapse
+                $('#liveClassCollapse, #liveExamCollapse')
+                    .not(current)
+                    .collapse('hide');
+
+            }).on('hidden.bs.collapse', function () {
+
+                // 3. Others section icon rotation
+                var $arrow = $('[data-target-arrow="' + this.id + '"] i');
+                $arrow.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+
+            }).on('shown.bs.collapse', function () {
+
+                var current = this;
+
+                // 4. Scroll to expanded section top
+                $('html, body').animate({
+                    scrollTop: $(current).offset().top - 150
+                }, 100);
+
+            });
+        });
+
+        // Board Info popups queue one after another (e.g. SSC then HSC), driven by the server-decided exam list
+        var boardInfoExamQueue = [];
+        var boardInfoQueueIndex = -1;
+
+        function showNextBoardInfoModal() {
+            boardInfoQueueIndex++;
+            if ($('#boardInfoModal').length == 0 || boardInfoQueueIndex >= boardInfoExamQueue.length) {
+                return;
+            }
+            var exam = boardInfoExamQueue[boardInfoQueueIndex];
+            $('#boardInfoStudentExamId').val(exam.studentExamId);
+            if (exam.wasPreviouslyIncorrect) {
+                $('#boardInfoTitle').text('The ' + exam.examName + ' information you provided previously was incorrect! Please submit your correct ' + exam.examName + ' board information');
+            } else {
+                $('#boardInfoTitle').text('Please submit your ' + exam.examName + ' board information');
+            }
+            $('#boardInfoYear').val('');
+            $('#boardInfoBoard').val('');
+            $('#boardInfoBoardRoll').val('');
+            $('#boardInfoRegistrationNo').val('');
+            $('#boardInfoError').hide();
+            $('#boardInfoSuccess').hide();
+            $('#boardInfoYearError, #boardInfoBoardError, #boardInfoBoardRollError, #boardInfoRegistrationNoError').hide();
+            updateBoardInfoSubmitButtonState();
+            $('#boardInfoModal').modal('show');
+        }
+
+        // Show Facebook Group popup on page load (server already decided it should show);
+        // if it isn't rendered, start the Board Info popup queue directly instead
+        $(document).ready(function () {
+            if ($('#facebookGroupModal').length) {
+                $('#facebookGroupModal').modal('show');
+            } else {
+                showNextBoardInfoModal();
+            }
+        });
+
+        // When FB group modal closes, set cookie so popup won't show again until cookie expires,
+        // then start the Board Info popup queue (if any)
+        $('#facebookGroupModal').on('hidden.bs.modal', function () {
+            $.ajax({
+                url: '/Dashboard/JoinFacebookGroup',
+                type: 'POST',
+                data: { __RequestVerificationToken: gettoken() }
+            });
+            showNextBoardInfoModal();
+        });
+
+        // Whenever a Board Info popup closes (submitted or skipped via X), show the next queued exam, if any
+        $('#boardInfoModal').on('hidden.bs.modal', function () {
+            showNextBoardInfoModal();
+        });
+
+        // Keep Submit disabled until every field has a value
+        function updateBoardInfoSubmitButtonState() {
+            var allFilled = $('#boardInfoYear').val()
+                && $('#boardInfoBoard').val()
+                && $.trim($('#boardInfoBoardRoll').val())
+                && $.trim($('#boardInfoRegistrationNo').val());
+            $('#boardInfoSubmitBtn').prop('disabled', !allFilled);
+        }
+
+        $(document).on('input', '#boardInfoBoardRoll, #boardInfoRegistrationNo', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        $(document).on('change', '#boardInfoYear, #boardInfoBoard', updateBoardInfoSubmitButtonState);
+        $(document).on('input', '#boardInfoBoardRoll, #boardInfoRegistrationNo', updateBoardInfoSubmitButtonState);
+
+        $(document).on('change', '#boardInfoYear', function () { $('#boardInfoYearError').hide(); });
+        $(document).on('change', '#boardInfoBoard', function () { $('#boardInfoBoardError').hide(); });
+        $(document).on('input', '#boardInfoBoardRoll', function () { $('#boardInfoBoardRollError').hide(); });
+        $(document).on('input', '#boardInfoRegistrationNo', function () { $('#boardInfoRegistrationNoError').hide(); });
+
+        $(document).on('click', '#boardInfoSubmitBtn', function () {
+            var $btn = $(this);
+            var year = $('#boardInfoYear').val();
+            var boardId = $('#boardInfoBoard').val();
+            var boardRoll = $.trim($('#boardInfoBoardRoll').val());
+            var registrationNo = $.trim($('#boardInfoRegistrationNo').val());
+            var boardRollPattern = /^[0-9]{6}$/;
+            var registrationNoPattern = /^[0-9]{10}$/;
+
+            $('#boardInfoError').hide();
+            $('#boardInfoYearError, #boardInfoBoardError, #boardInfoBoardRollError, #boardInfoRegistrationNoError').hide();
+
+            var hasError = false;
+            if (!year) { $('#boardInfoYearError').text('Please select year.').show(); hasError = true; }
+            if (!boardId) { $('#boardInfoBoardError').text('Please select board.').show(); hasError = true; }
+            if (!boardRollPattern.test(boardRoll)) { $('#boardInfoBoardRollError').text('Board Roll must be 6 digits.').show(); hasError = true; }
+            if (!registrationNoPattern.test(registrationNo)) { $('#boardInfoRegistrationNoError').text('Registration No. must be 10 digits.').show(); hasError = true; }
+
+            if (hasError) return;
+
+            $btn.prop('disabled', true);
+            $.ajax({
+                url: '/Dashboard/SaveBoardInfo',
+                type: 'POST',
+                data: {
+                    StudentExamId: $('#boardInfoStudentExamId').val(),
+                    Year: year,
+                    BoardId: boardId,
+                    BoardRoll: boardRoll,
+                    RegistrationNo: registrationNo,
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (response) {
+                    if (response.isSuccess) {
+                        $('#boardInfoError').hide();
+                        $('#boardInfoSuccess').show();
+                        setTimeout(function () {
+                            $('#boardInfoModal').modal('hide');
+                        }, 1000);
+                    } else {
+                        $('#boardInfoError').text(response.message || 'Something went wrong.').show();
+                    }
+                },
+                error: function () {
+                    $('#boardInfoError').text('Something went wrong.').show();
+                },
+                complete: function () {
+                    updateBoardInfoSubmitButtonState();
+                }
+            });
+        });
+
+        $(document).on('click', '.app-btn-take-exam', function () {
+            setCookie("AppExamReturnUrl", "/Dashboard/NewDashBoard", 1);
+        });
+    </script>
+   
+
+
+</body></html>
